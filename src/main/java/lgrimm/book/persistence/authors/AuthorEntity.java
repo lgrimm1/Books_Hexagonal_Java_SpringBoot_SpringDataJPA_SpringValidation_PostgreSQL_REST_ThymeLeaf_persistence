@@ -1,4 +1,4 @@
-package lgrimm.book.persistence.author;
+package lgrimm.book.persistence.authors;
 
 import jakarta.persistence.*;
 import java.util.*;
@@ -33,9 +33,7 @@ public class AuthorEntity {
 	public AuthorEntity(String familyName,
 						String givenName,
 						String bookIds,
-						String seriesIds,
-						List<Long> bookIdList,
-						List<Long> seriesIdList) {
+						String seriesIds) {
 		this.familyName = familyName;
 		this.givenName = givenName;
 		this.bookIds = bookIds;
@@ -46,9 +44,7 @@ public class AuthorEntity {
 						String familyName,
 						String givenName,
 						String bookIds,
-						String seriesIds,
-						List<Long> bookIdList,
-						List<Long> seriesIdList) {
+						String seriesIds) {
 		this.id = id;
 		this.familyName = familyName;
 		this.givenName = givenName;

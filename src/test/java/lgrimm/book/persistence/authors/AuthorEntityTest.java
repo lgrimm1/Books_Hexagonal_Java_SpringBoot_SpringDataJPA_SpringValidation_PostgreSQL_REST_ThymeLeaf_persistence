@@ -1,18 +1,14 @@
-package lgrimm.book.persistence.author;
+package lgrimm.book.persistence.authors;
 
 import org.junit.jupiter.api.*;
 
 import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class AuthorEntityTest {
 
 	@Test
 	void getBookIdList_NullIds() {
 		AuthorEntity authorEntity = new AuthorEntity(
-				null,
-				null,
 				null,
 				null,
 				null,
@@ -26,8 +22,6 @@ class AuthorEntityTest {
 				null,
 				null,
 				"",
-				null,
-				null,
 				null);
 		Assertions.assertEquals(0, authorEntity.getBookIdList().size());
 	}
@@ -38,8 +32,6 @@ class AuthorEntityTest {
 				null,
 				null,
 				"  ",
-				null,
-				null,
 				null);
 		Assertions.assertEquals(0, authorEntity.getBookIdList().size());
 	}
@@ -50,8 +42,6 @@ class AuthorEntityTest {
 				null,
 				null,
 				"2",
-				null,
-				null,
 				null);
 		List<Long> expectedList = List.of(2L);
 		Assertions.assertEquals(expectedList, authorEntity.getBookIdList());
@@ -63,8 +53,6 @@ class AuthorEntityTest {
 				null,
 				null,
 				"2,3",
-				null,
-				null,
 				null);
 		List<Long> expectedList = List.of(2L, 3L);
 		Assertions.assertEquals(expectedList, authorEntity.getBookIdList());
@@ -104,8 +92,6 @@ class AuthorEntityTest {
 				null,
 				null,
 				null,
-				null,
-				null,
 				null);
 		Assertions.assertNull(authorEntity.getSeriesIdList());
 	}
@@ -116,9 +102,7 @@ class AuthorEntityTest {
 				null,
 				null,
 				null,
-				"",
-				null,
-				null);
+				"");
 		Assertions.assertEquals(0, authorEntity.getSeriesIdList().size());
 	}
 
@@ -128,9 +112,7 @@ class AuthorEntityTest {
 				null,
 				null,
 				null,
-				"  ",
-				null,
-				null);
+				"  ");
 		Assertions.assertEquals(0, authorEntity.getSeriesIdList().size());
 	}
 
@@ -140,9 +122,7 @@ class AuthorEntityTest {
 				null,
 				null,
 				null,
-				"4",
-				null,
-				null);
+				"4");
 		List<Long> expectedList = List.of(4L);
 		Assertions.assertEquals(expectedList, authorEntity.getSeriesIdList());
 	}
@@ -153,9 +133,7 @@ class AuthorEntityTest {
 				null,
 				null,
 				null,
-				"4,5",
-				null,
-				null);
+				"4,5");
 		List<Long> expectedList = List.of(4L, 5L);
 		Assertions.assertEquals(expectedList, authorEntity.getSeriesIdList());
 	}

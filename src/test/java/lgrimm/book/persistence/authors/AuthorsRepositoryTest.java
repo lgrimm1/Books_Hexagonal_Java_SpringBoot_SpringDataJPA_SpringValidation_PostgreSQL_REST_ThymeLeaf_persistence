@@ -21,10 +21,8 @@ class AuthorsRepositoryTest {
 		entity = new AuthorEntity(
 				"Surname_1 Surname_2",
 				"Firstname_1 Firstname_2",
-				null,
-				null);
-		entity.setBookIdList(List.of(11L, 12L));
-		entity.setSeriesIdList(List.of(21L, 22L));
+				"11,12",
+				"21,22");
 	}
 
 	@AfterEach

@@ -18,19 +18,43 @@ public class AuthorsService {
 	}
 
 	public AuthorPayload createAuthor(AuthorPayload authorPayload) {
+		String message;
 		if (authorPayload == null) {
-			throw new RuntimeException("No author was defined.");
+			return new AuthorPayload(
+					null,
+					null,
+					null,
+					null,
+					"No author was defined.");
 		}
 		if (authorPayload.getId() != null) {
-			throw new RuntimeException("Author ID was defined.");
+			return new AuthorPayload(
+					authorPayload.getId(),
+					authorPayload.getFamilyName(),
+					authorPayload.getGivenName(),
+					authorPayload.getBookIds(),
+					authorPayload.getSeriesIds(),
+					"Author ID was defined.");
 		}
 		if (authorPayload.getFamilyName() == null || authorPayload.getFamilyName().isBlank()) {
-			throw new RuntimeException("Author family name was not defined.");
+			return new AuthorPayload(
+					authorPayload.getId(),
+					authorPayload.getFamilyName(),
+					authorPayload.getGivenName(),
+					authorPayload.getBookIds(),
+					authorPayload.getSeriesIds(),
+					"Author family name was not defined.");
 		}
 		AuthorEntity authorEntity = converters.AuthorPayloadToEntity(authorPayload);
 		if (authorEntity == null) {
-			throw new RuntimeException("Author contained wrong data.");
+			return new AuthorPayload(
+					authorPayload.getId(),
+					authorPayload.getFamilyName(),
+					authorPayload.getGivenName(),
+					authorPayload.getBookIds(),
+					authorPayload.getSeriesIds(),
+					"Author contained wrong data.");
 		}
-		return converters.AuthorEntityToPayload(authorsRepository.save(authorEntity));
+		return converters.AuthorEntityToPayload(authorsRepository.save(authorEntity), "");
 	}
 }

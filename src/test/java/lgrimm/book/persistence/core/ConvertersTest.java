@@ -6,8 +6,6 @@ import org.junit.jupiter.api.*;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class ConvertersTest {
 
 	Converters converters;
@@ -29,8 +27,8 @@ class ConvertersTest {
 				"fn",
 				"gn",
 				List.of(2L, 3L),
-				List.of(4L, 5L)
-		);
+				List.of(4L, 5L),
+				"message");
 		AuthorEntity expectedAuthorEntity = new AuthorEntity(
 				11L,
 				"fn",
@@ -44,7 +42,47 @@ class ConvertersTest {
 
 	@Test
 	void authorEntityToPayload_NullEntity() {
-		Assertions.assertNull(converters.AuthorEntityToPayload(null));
+		Assertions.assertNull(converters.AuthorEntityToPayload(null, "message"));
+	}
+
+	@Test
+	void authorEntityToPayload_NullMessage() {
+		AuthorEntity authorEntity = new AuthorEntity(
+				11L,
+				"fn",
+				"gn",
+				"2,3",
+				"4,5"
+		);
+		AuthorPayload expectedAuthorPayload = new AuthorPayload(
+				11L,
+				"fn",
+				"gn",
+				List.of(2L, 3L),
+				List.of(4L, 5L),
+				"");
+		AuthorPayload authorPayload = converters.AuthorEntityToPayload(authorEntity, null);
+		Assertions.assertEquals(expectedAuthorPayload, authorPayload);
+	}
+
+	@Test
+	void authorEntityToPayload_BlankMessage() {
+		AuthorEntity authorEntity = new AuthorEntity(
+				11L,
+				"fn",
+				"gn",
+				"2,3",
+				"4,5"
+		);
+		AuthorPayload expectedAuthorPayload = new AuthorPayload(
+				11L,
+				"fn",
+				"gn",
+				List.of(2L, 3L),
+				List.of(4L, 5L),
+				"");
+		AuthorPayload authorPayload = converters.AuthorEntityToPayload(authorEntity, "  ");
+		Assertions.assertEquals(expectedAuthorPayload, authorPayload);
 	}
 
 	@Test
@@ -61,9 +99,9 @@ class ConvertersTest {
 				"fn",
 				"gn",
 				List.of(2L, 3L),
-				List.of(4L, 5L)
-		);
-		AuthorPayload authorPayload = converters.AuthorEntityToPayload(authorEntity);
+				List.of(4L, 5L),
+				"message");
+		AuthorPayload authorPayload = converters.AuthorEntityToPayload(authorEntity, "message");
 		Assertions.assertEquals(expectedAuthorPayload, authorPayload);
 	}
 }

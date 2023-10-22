@@ -50,16 +50,19 @@ public class Converters {
 				idListToString(authorPayload.getSeriesIds()));
 	}
 
-	public AuthorPayload AuthorEntityToPayload(AuthorEntity authorEntity) {
+	public AuthorPayload AuthorEntityToPayload(AuthorEntity authorEntity, String message) {
 		if (authorEntity == null) {
 			return null;
+		}
+		if (message == null || message.isBlank()) {
+			message = "";
 		}
 		return new AuthorPayload(
 				authorEntity.getId(),
 				authorEntity.getFamilyName(),
 				authorEntity.getGivenName(),
 				IdStringToList(authorEntity.getBookIds()),
-				IdStringToList(authorEntity.getSeriesIds())
-		);
+				IdStringToList(authorEntity.getSeriesIds()),
+				message);
 	}
 }

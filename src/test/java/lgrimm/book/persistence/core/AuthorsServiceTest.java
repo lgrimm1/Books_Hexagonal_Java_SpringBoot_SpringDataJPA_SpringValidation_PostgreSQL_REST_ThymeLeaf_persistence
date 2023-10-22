@@ -15,6 +15,7 @@ class AuthorsServiceTest {
 	AuthorsRepository authorsRepository;
 	Converters converters;
 	AuthorsService service;
+	AuthorPayload authorPayload, expectedAuthorPayload;
 
 	@BeforeEach
 	void setUp() {
@@ -35,73 +36,130 @@ class AuthorsServiceTest {
 
 	@Test
 	void createAuthor_NullAuthorPayload() {
+/*
 		Exception e = Assertions.assertThrows(RuntimeException.class, () -> service.createAuthor(null));
 		Assertions.assertEquals("No author was defined.", e.getMessage());
+*/
+		expectedAuthorPayload = new AuthorPayload(
+				null,
+				null,
+				null,
+				null,
+				null,
+				"No author was defined.");
+		Assertions.assertEquals(expectedAuthorPayload, service.createAuthor(authorPayload));
 	}
 
 	@Test
 	void createAuthor_ExistingId() {
+/*
 		AuthorPayload payload = new AuthorPayload(
 				2L,
 				"fn",
 				"gn",
 				List.of(3L, 4L),
-				List.of(5L, 6L)
-		);
+				List.of(5L, 6L),
+				message);
 		Exception e = Assertions.assertThrows(RuntimeException.class, () -> service.createAuthor(payload));
 		Assertions.assertEquals("Author ID was defined.", e.getMessage());
+*/
+		authorPayload = new AuthorPayload(
+				2L,
+				"fn",
+				"gn",
+				List.of(2L, 3L),
+				List.of(4L, 5L),
+				"");
+		expectedAuthorPayload = new AuthorPayload(
+				2L,
+				"fn",
+				"gn",
+				List.of(2L, 3L),
+				List.of(4L, 5L),
+				"Author ID was defined.");
+		Assertions.assertEquals(expectedAuthorPayload, service.createAuthor(authorPayload));
 	}
 
 	@Test
 	void createAuthor_NullFamilyName() {
-		AuthorPayload payload = new AuthorPayload(
+		authorPayload = new AuthorPayload(
 				null,
 				null,
 				"gn",
-				List.of(3L, 4L),
-				List.of(5L, 6L)
-		);
+				List.of(2L, 3L),
+				List.of(4L, 5L),
+				"");
+		expectedAuthorPayload = new AuthorPayload(
+				null,
+				null,
+				"gn",
+				List.of(2L, 3L),
+				List.of(4L, 5L),
+				"Author family name was not defined.");
+/*
 		Exception e = Assertions.assertThrows(RuntimeException.class, () -> service.createAuthor(payload));
 		Assertions.assertEquals("Author family name was not defined.", e.getMessage());
+*/
+		Assertions.assertEquals(expectedAuthorPayload, service.createAuthor(authorPayload));
 	}
 
 	@Test
 	void createAuthor_BlankFamilyName() {
-		AuthorPayload payload = new AuthorPayload(
+		authorPayload = new AuthorPayload(
 				null,
 				"  ",
 				"gn",
-				List.of(3L, 4L),
-				List.of(5L, 6L)
-		);
+				List.of(2L, 3L),
+				List.of(4L, 5L),
+				"");
+		expectedAuthorPayload = new AuthorPayload(
+				null,
+				"  ",
+				"gn",
+				List.of(2L, 3L),
+				List.of(4L, 5L),
+				"Author family name was not defined.");
+/*
 		Exception e = Assertions.assertThrows(RuntimeException.class, () -> service.createAuthor(payload));
 		Assertions.assertEquals("Author family name was not defined.", e.getMessage());
+*/
+		Assertions.assertEquals(expectedAuthorPayload, service.createAuthor(authorPayload));
 	}
 
 	@Test
 	void createAuthor_WrongData() {
-		AuthorPayload payload = new AuthorPayload(
+		authorPayload = new AuthorPayload(
 				null,
 				"fn",
 				"gn",
-				List.of(3L, 4L),
-				List.of(5L, 6L)
-		);
-		when(converters.AuthorPayloadToEntity(payload))
+				List.of(2L, 3L),
+				List.of(4L, 5L),
+				"");
+		expectedAuthorPayload = new AuthorPayload(
+				null,
+				"fn",
+				"gn",
+				List.of(2L, 3L),
+				List.of(4L, 5L),
+				"Author contained wrong data.");
+		when(converters.AuthorPayloadToEntity(authorPayload))
 				.thenReturn(null);
+/*
 		Exception e = Assertions.assertThrows(RuntimeException.class, () -> service.createAuthor(payload));
 		Assertions.assertEquals("Author contained wrong data.", e.getMessage());
+*/
+		Assertions.assertEquals(expectedAuthorPayload, service.createAuthor(authorPayload));
 	}
 
 	@Test
 	void createAuthor_RightData() {
-		AuthorPayload payload = new AuthorPayload(
+		authorPayload = new AuthorPayload(
 				null,
 				"fn",
 				"gn",
-				List.of(3L, 4L),
-				List.of(5L, 6L)
-		);
+				List.of(2L, 3L),
+				List.of(4L, 5L),
+				"");
 		AuthorEntity entity = new AuthorEntity(
 				null,
 				"fn",
@@ -109,8 +167,9 @@ class AuthorsServiceTest {
 				"3,4",
 				"5,6"
 		);
-		when(converters.AuthorPayloadToEntity(payload))
+		when(converters.AuthorPayloadToEntity(authorPayload))
 				.thenReturn(entity);
+
 		AuthorEntity savedEntity = new AuthorEntity(
 				2L,
 				"fn",
@@ -118,17 +177,18 @@ class AuthorsServiceTest {
 				"3,4",
 				"5,6"
 		);
-		AuthorPayload savedPayload = new AuthorPayload(
+		when(authorsRepository.save(entity))
+				.thenReturn(savedEntity);
+
+		expectedAuthorPayload = new AuthorPayload(
 				2L,
 				"fn",
 				"gn",
-				List.of(3L, 4L),
-				List.of(5L, 6L)
-		);
-		when(authorsRepository.save(entity))
-				.thenReturn(savedEntity);
-		when(converters.AuthorEntityToPayload(savedEntity))
-				.thenReturn(savedPayload);
-		Assertions.assertEquals(savedPayload, service.createAuthor(payload));
+				List.of(2L, 3L),
+				List.of(4L, 5L),
+				"");
+		when(converters.AuthorEntityToPayload(savedEntity, ""))
+				.thenReturn(expectedAuthorPayload);
+		Assertions.assertEquals(expectedAuthorPayload, service.createAuthor(authorPayload));
 	}
 }

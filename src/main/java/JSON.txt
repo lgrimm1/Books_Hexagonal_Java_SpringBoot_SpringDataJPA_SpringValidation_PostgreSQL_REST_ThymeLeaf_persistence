@@ -1,0 +1,4 @@
+Endpoints
+-------------------
+POST /author        request body: {"id": <long>, "familyName": <string>, "givenName": <string>, "bookIds": [long, long, ...], "seriesIds": [long, long, ...], "message": <string>}
+                    response body: {"id": <long>, "familyName": <string>, "givenName": <string>, "bookIds": [long, long, ...], "seriesIds": [long, long, ...], "message": <string>}
